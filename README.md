@@ -25,8 +25,8 @@ Você foi selecionado para nosso teste de Front-End. Você deve:
 
 Recomendamos utilizar as seguintes tecnologias para desenvolver o seu projeto:
 
-- Angular 12 (Routing e SCSS) ou React (Hooks e SASS Modules);
-- HTML/CSS;
+- Angular 16 ou Vue 3 (Nuxt 3);
+- HTML/CSS (pré-processadores de CSS - variaveis, mixins, etc);
 - Git.
 
 ## Instruções
