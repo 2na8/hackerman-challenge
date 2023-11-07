@@ -19,7 +19,7 @@ Você foi selecionado para nosso teste de Front-End. Você deve:
 
 [Projeto no Figma](https://www.figma.com/file/8QutE5PbNea4Q4hi8T91rv/Hackerman-s-Challenge?node-id=0%3A1)
 
-[Assets](https://drive.google.com/drive/folders/1f-a81FiT-SyGGxO7bmoB91X12oY9t2wW?usp=sharing)
+[Assets](https://drive.google.com/drive/u/2/folders/1tv8m1SoQ5kC6v7QLx3RtF5U-9R8EE-nG)
 
 ## Tecnologias
 
