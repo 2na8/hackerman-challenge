@@ -1,0 +1,7 @@
+<button
+  [ngClass]="disabled ? 'disabled' : 'active'"
+  class="button"
+  (click)="!disabled && redirectRoute()"
+>
+  <ng-content></ng-content>
+</button>

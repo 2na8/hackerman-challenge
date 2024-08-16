@@ -1,0 +1,12 @@
+<div class="container-results">
+  <p class="sub-title">{{ title }}:</p>
+  @if (items && items.length) {
+  <div class="results">
+    @for (item of items; track $index) {
+    <p>{{ item[itemProperty] }}</p>
+    }
+  </div>
+  } @else {
+  <p class="no-result">N/A</p>
+  }
+</div>

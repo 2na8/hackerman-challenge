@@ -1,0 +1,32 @@
+.container-results {
+  padding-top: 20px;
+}
+
+.sub-title {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 0 0px 0px;
+}
+
+.results p {
+  background-color: #353535;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+.no-result {
+  margin-top: 10px;
+  width: 50px;
+  border: 1px solid #ffffff8d;
+  border-radius: 4px;
+  padding: 5px 0px;
+  text-align: center;
+  font-size: 16px;
+}

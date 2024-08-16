@@ -1,0 +1,22 @@
+input {
+  width: 362px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #353535;
+  border: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 400;
+  color: #dfdfdf;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (max-width: 445px) {
+  input {
+    width: 320px;
+  }
+}

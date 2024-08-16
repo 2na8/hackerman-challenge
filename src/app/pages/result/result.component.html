@@ -1,0 +1,39 @@
+<div class="container">
+  @if (loading) {
+  <wdm-loading [loading]="loading"></wdm-loading>
+  } @else {
+  <wdm-card class="container-result">
+    <div>
+      <p class="title">Informações sobre</p>
+      <p class="title">{{ characterDetails.name }}:</p>
+
+      <wdm-details-list
+        title="Filmes"
+        [items]="films"
+        itemProperty="title"
+      ></wdm-details-list>
+      <wdm-details-list
+        title="Naves"
+        [items]="starships"
+        itemProperty="name"
+      ></wdm-details-list>
+      <wdm-details-list
+        title="Veículos"
+        [items]="vehicles"
+        itemProperty="name"
+      ></wdm-details-list>
+      <wdm-details-list
+        title="Espécies"
+        [items]="species"
+        itemProperty="name"
+      ></wdm-details-list>
+      <wdm-details-list
+        title="Planeta"
+        [items]="planets"
+        itemProperty="name"
+      ></wdm-details-list>
+    </div>
+    <wdm-button path="/search">Pesquisar Novamente</wdm-button>
+  </wdm-card>
+  }
+</div>

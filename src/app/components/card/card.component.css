@@ -1,0 +1,18 @@
+.container-card {
+  width: 410px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #232323;
+  border-radius: 8px;
+  padding: 24px;
+  color: #cecece;
+}
+
+@media (max-width: 445px) {
+  .container-card {
+    width: 100%;
+  }
+}

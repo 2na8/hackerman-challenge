@@ -1,0 +1,8 @@
+<input
+  [placeholder]="placeholder"
+  type="text"
+  [(ngModel)]="inputValue"
+  (focus)="onTouched && onTouched()"
+  (input)="onChange && onChange(inputValue)"
+  [disabled]="isDisabled"
+/>

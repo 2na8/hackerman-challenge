@@ -1,0 +1,31 @@
+.loading {
+  width: 410px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.loading img {
+  width: 48px;
+  height: 48px;
+  animation: fadeInOut 3s infinite;
+}
+
+.loading-text {
+  font-size: 20px;
+  font-weight: 600;
+
+  padding-top: 20px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
