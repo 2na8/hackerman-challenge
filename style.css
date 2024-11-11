@@ -1,0 +1,364 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+
+.background-image {
+    width: 1300px; 
+    height: 700px; 
+    position: fixed;
+    background-image: url('img/StarWarsBackground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    z-index: 1; 
+    
+}
+
+.logo {
+    width: 350px;
+    height: auto;
+    position: absolute;
+    top: 50px;
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 2; 
+}
+
+
+.tabela_email {
+    background-color: rgb(31, 31, 31);
+    padding-left: 25px;
+    padding-bottom: 20px;
+    padding-right: 25px;
+    margin-top: 100px;
+    border-radius: 10px;
+    z-index: 3;
+    
+}
+
+.p_esquerda {
+    text-align: left;
+    font-size: 30px;
+    color: rgb(208, 208, 208);
+    font-weight: bold;
+}
+
+.p_baixo {
+    text-align: left;
+    font-size: 20px;
+    font-style: normal;
+    color: rgb(208, 208, 208);
+    margin-top: -20px;
+}
+
+.botao {
+    background-color: rgb(31, 31, 31);
+    color: rgb(126, 126, 126);
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid rgb(54, 54, 54); 
+    margin-top: 10px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 90%;
+}
+
+.botao:hover {
+    color: rgb(196, 196, 196);
+    border: 2px solid rgb(67, 67, 67);
+}
+
+input[type="email"] {
+    width: 90%;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 246, 81, 0.5);
+    color: rgb(126, 126, 126);
+    background-color: rgb(54, 54, 54);
+    font-size: 13px;
+}
+
+input[type="email"]::placeholder {
+    color: rgb(170, 170, 170);
+}
+
+
+
+
+
+
+.carregamento_dados_persongens {
+    background-color: rgb(31, 31, 31);
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 80px;
+    border-radius: 10px;
+    z-index: 3; 
+    
+}
+.carregamento_imagem {
+    width: 50px;
+    height: auto;
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%); 
+    z-index: 2;
+    margin-bottom: 2px; 
+}
+
+.p_baixo_carregmaneto {
+    text-align: left;
+    font-size: 20px;
+    font-style: normal;
+    color: rgb(208, 208, 208); 
+    margin-top: 2px; 
+}
+
+
+
+
+.tabela_nome_personagem {
+    background-color: rgb(31, 31, 31);
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-block: 50px;
+    margin-top: 100px;
+    border-radius: 10px;
+    display: None;
+    z-index: 3; 
+}
+
+input[type="nome_personagem"] {
+    width: 90%;
+    height: 20px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    border: 1px solid rgba(17, 255, 184, 0.575);
+    color: rgb(126, 126, 126);
+    background-color: rgb(54, 54, 54);
+    font-size: 13px;
+}
+input[type="nome_personagem"]::placeholder {
+    color: rgb(170, 170, 170);
+}
+
+.botao_request {
+    background-color: rgb(255, 236, 24);
+    color: rgb(72, 72, 72);
+    font-size: 16px;
+    cursor: pointer;
+    
+    margin-top: 10px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 90%;
+    
+}
+
+.botao_request:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 234, 5);
+}
+
+
+
+
+
+
+
+
+
+
+.dados_personagem {
+    background-color: rgb(31, 31, 31);
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 180px;
+    border-radius: 10px;
+    height: 400px;
+    position: relative;
+    text-align: left;
+    z-index: 3;
+    display: none;
+    overflow-y: scroll; 
+}
+
+.dados_personagem::-webkit-scrollbar {
+    width: 8px; 
+    background-color: transparent;
+}
+
+
+.dados_personagem::-webkit-scrollbar-track {
+    background-color: transparent; 
+}
+
+.dados_personagem::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3); 
+    border-radius: 10px;
+}
+
+.dados_personagem::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5); 
+}
+
+
+
+
+
+
+
+.mais_profundo {
+    width: 48%; 
+    display: inline-block; 
+    margin-inline-end: -30px;
+}
+
+
+.armazenado {
+    text-align: left;
+    font-size: 12px;
+    font-style: normal;
+    color: rgb(190, 190, 190);
+    background-color: rgb(77, 77, 77);
+    margin-top: 1px;
+    border-radius: 3px;
+    padding: 5px 10px; 
+    width:max-content;
+   
+
+}
+
+
+
+/*
+<p><strong>Filmes:</strong></p>
+<p id="filmes" class="filmes"></p>
+<p><strong>Naves:</strong></p>
+<p id="naves" class="naves"></p>
+<p><strong>Veículos:</strong></p>
+<p id="veiculos" class="veiculos"></p>
+<p><strong>Espécies:</strong></p>
+<p id="especies" class="especies"></p>
+<p><strong>Planeta Natal:</strong></p>
+<p id="planeta" class="planeta"></p>*/
+
+
+
+
+
+.nome_usuario {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff; 
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    color: white;
+    font-size: 9px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+ 
+    .background-image {
+        width: 100vw; 
+        height: 100vh;
+        background-size: cover;
+        position: fixed;
+        top: 0;
+    }
+
+
+    .logo {
+        width: 230px; 
+        top: 20px; 
+    }
+
+
+    .tabela_email {
+        padding: 15px;
+        margin-top: 50px;
+        width: 80vw; 
+        font-size: 16px;
+    }
+
+    .tabela_nome_personagem {
+        background-color: rgb(31, 31, 31);
+        width: 80vw;
+        display: None;
+        z-index: 3;
+    }
+    /* Ajuste no botão */
+    .botao, .botao_request {
+        width: 100%; 
+        padding: 8px;
+        font-size: 14px;
+    }
+
+  
+    input[type="email"], input[type="nome_personagem"] {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .carregamento_dados_persongens {
+        padding:90px;
+        
+    }
+
+  
+    .dados_personagem {
+        margin-top: 100px;
+        width: 80vw;
+        padding: 10px;
+        font-size: 14px;
+        
+    }
+
+    .mais_profundo {
+        width: 100%; 
+        margin-inline-end: 0;
+    }
+
+
+    footer {
+        font-size: 8px;
+        padding-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site com Imagem de Fundo</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="background-image">
+        <img src="img/LogoStarWars.png" alt="Descrição da imagem" class="logo">
+       <div class="tabela_email" id="tabela_email" >
+            <p class="p_esquerda">Olá!</p>
+            <p class="p_baixo">Para começar seu teste, digite um e-mail:</p>
+            <input type="email" id="email" name="email" required placeholder="examplo@email.com">
+            <button class="botao" onclick="criar_painel()">Próximo</button>
+        </div>
+        <div class="tabela_nome_personagem" id="tabela_nome_personagem">
+            <p class="p_baixo">Agora, digite seu personagem favorito de<br> Star Wars</p>
+            <input type="nome_personagem" id="nome_personagem" name="nome_personagem" required placeholder="Darth Vader">
+            <button class="botao_request" onclick="request_de_nome_persongem()">Próximo</button>
+        </div>
+
+        <div class="carregamento_dados_persongens" id="carregamento_dados_persongens" style="display: none;">
+            <img src="img/IconeStormTrooper.png" alt="Descrição da imagem" class="carregamento_imagem">
+            <p class="p_baixo_carregmaneto">Carregando...</p>   
+        </div>
+        <div class="dados_personagem" id="dados_personagem" style="display: none;">
+          
+        </div>
+
+
+        <footer>
+            <p class="footer-text">Criado em um planeta tão tão perto<br>Feito por: Guilherme Ryan, whats: 5551985109343</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let listaFilmes = new Set();
+        let listaNaves = new Set();
+        let listaVeiculos = new Set();
+        let listaEspecies = new Set();
+        let listaPlanetas = new Set();
+
+        function criar_painel() {
+            var email = document.getElementById('email').value;
+            var tabela_email = document.getElementById('tabela_email');
+            
+            var tabela_nome_personagem = document.getElementById('tabela_nome_personagem');
+            
+
+          
+            if (email && email.includes("@")) {
+                
+                tabela_email.style.display = 'none';
+
+                
+                tabela_nome_personagem.style.display = 'block';
+            } else {
+                alert('Por favor, insira um e-mail válido.');
+            }
+        }
+
+        function request_de_nome_persongem() {
+            var tabela_nome_personagem = document.getElementById('tabela_nome_personagem');
+            tabela_nome_personagem.style.display = 'None';
+
+    var nomePersonagem = document.getElementById('nome_personagem').value.toLowerCase();
+    let url = 'https://swapi.dev/api/people/';
+    let personagemId = null;
+    let personagemEncontrado = false;
+
+    let listaPersonagens = [
+        ['1', 'Luke Skywalker'],
+        ['2', 'C-3PO'],
+        ['3', 'R2-D2'],
+        ['4', 'Darth Vader'],
+        ['5', 'Leia Organa'],
+        ['6', 'Owen Lars'],
+        ['7', 'Beru Whitesun lars'],
+        ['8', 'R5-D4'],
+        ['9', 'Biggs Darklighter'],
+        ['10', 'Obi-Wan Kenobi']
+    ];
+
+    
+    for (let i = 0; i < listaPersonagens.length; i++) {
+        let nome = listaPersonagens[i][1].toLowerCase();
+        if (nome.includes(nomePersonagem)) {
+            personagemId = listaPersonagens[i][0];
+            url = url + personagemId;
+            personagemEncontrado = true;
+            break;
+        }
+    }
+
+    if (personagemEncontrado) {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                
+                carregar_dados_personagem(data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar personagem:', error);
+                criar_painel()
+            });
+    } else {
+        alert("Personagem não encontrado.");
+        criar_painel()
+        
+    }
+}
+
+function carregar_dados_personagem(data) {
+    let personagemNome = data.name;
+    let personagemFilmes = data.films;
+    let personagemNaves = data.starships;
+    let personagemVeiculos = data.vehicles;
+    let personagemEspecies = data.species;
+    let personagemPlanetas = data.homeworld;
+    var dados_personagem = document.getElementById('dados_personagem');
+    dados_personagem.style.display = 'block'; 
+
+    let conteudo = `
+    <p class="dados-item"><strong>Informações sobre ${personagemNome}:</strong></p>
+    <p class="dados-item"><strong>Filmes:</strong></p>
+    <div id="filmes"></div>
+    <p class="dados-item"><strong>Naves:</strong></p>
+    <div id="naves"></div>
+    <p class="dados-item"><strong>Veículos:</strong></p>
+    <div id="veiculos"></div>
+    <p class="dados-item"><strong>Espécies:</strong></p>
+    <div id="especies"></div>
+    <p class="dados-item"><strong>Planeta Natal:</strong></p>
+    <div id="planeta"></div>
+    <button class="botao_request" onclick="voltar()">Pesquise novamente</button>
+
+`;
+
+
+    var carregamento_dados_persongens = document.getElementById('carregamento_dados_persongens');
+    carregamento_dados_persongens.style.display = 'Block';
+    document.getElementById('dados_personagem').innerHTML = conteudo;
+    var dados_personagem = document.getElementById('dados_personagem');
+    dados_personagem.style.display = 'None';
+
+   
+    Promise.all([
+        fetchDados(personagemFilmes, 'films'),
+        fetchDados(personagemNaves, 'starships'),
+        fetchDados(personagemVeiculos, 'vehicles'),
+        fetchDados(personagemEspecies, 'species'),
+        fetchDados([personagemPlanetas], 'planets')
+    ]).then(respostas => {
+        
+        atualizarPagina(respostas);
+    }).catch(error => {
+        console.error('Erro ao buscar dados relacionados:', error);
+    });
+}
+
+function fetchDados(urls, tipo) {
+    // Faz uma requisição para cada URL e retorna os dados
+    return Promise.all(urls.map(url => {
+        return fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                return data.name || data.title; 
+            });
+    }));
+}
+
+
+function atualizarPagina(respostas) {
+    let filmes = respostas[0];
+    let naves = respostas[1];
+    let veiculos = respostas[2];
+    let especies = respostas[3];
+    let planeta = respostas[4][0]; 
+
+    var carregamento_dados_persongens = document.getElementById('carregamento_dados_persongens');
+    carregamento_dados_persongens.style.display = 'None';
+
+    var dados_personagem = document.getElementById('dados_personagem');
+    dados_personagem.style.display = 'Block';
+
+   
+    filmes = filmes.length > 0 ? filmes : ['N/A'];
+    naves = naves.length > 0 ? naves : ['N/A'];
+    veiculos = veiculos.length > 0 ? veiculos : ['N/A'];
+    especies = especies.length > 0 ? especies : ['N/A'];
+    planeta = planeta ? planeta : 'N/A';
+
+    
+    function estiloTexto(value) {
+        return value === 'N/A' 
+            ? 'color: rgb(174, 174, 174); background-color: rgb(31, 31, 31); border: 1px solid rgb(77, 77, 77); border-radius: 3px;' 
+            : '';
+        }
+
+
+    // Atualiza os dados na página, com cor vermelha para 'N/A'
+    document.getElementById('filmes').innerHTML = filmes.map(filme => 
+        `<div class="mais_profundo"><p class="armazenado" style="${estiloTexto(filme)}">${filme}</p></div>`).join('');
+    document.getElementById('naves').innerHTML = naves.map(nave => 
+        `<div class="mais_profundo"><p class="armazenado" style="${estiloTexto(nave)}">${nave}</p></div>`).join('');
+    document.getElementById('veiculos').innerHTML = veiculos.map(veiculo => 
+        `<div class="mais_profundo"><p class="armazenado" style="${estiloTexto(veiculo)}">${veiculo}</p></div>`).join('');
+    document.getElementById('especies').innerHTML = especies.map(especie => 
+        `<div class="mais_profundo"><p class="armazenado" style="${estiloTexto(especie)}">${especie}</p></div>`).join('');
+    document.getElementById('planeta').innerHTML = 
+        `<div class="mais_profundo"><p class="armazenado" style="${estiloTexto(planeta)}">${planeta}</p></div>`;
+}
+
+
+
+function voltar() {
+    var dados_personagem = document.getElementById('dados_personagem');
+    var tabela_nome_personagem = document.getElementById('tabela_nome_personagem');
+    var tabela_email = document.getElementById('tabela_email');
+
+    dados_personagem.style.display = 'none'; 
+
+    
+    if (tabela_email.style.display === 'none') {
+        tabela_nome_personagem.style.display = 'block'; 
+    } else {
+        tabela_email.style.display = 'block'; 
+    }
+}
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
