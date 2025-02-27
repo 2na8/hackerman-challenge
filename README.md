@@ -1,4 +1,3 @@
-
 [![Hackerman.](https://c.tenor.com/xuNo8NDdwIkAAAAd/hackerman.gif)](https://synth.codes)
 
 
@@ -41,10 +40,8 @@ Recomendamos utilizar as seguintes tecnologias para desenvolver o seu projeto:
 
 > Utilizar o sistema de rotas para cada uma das páginas (com excessão do "loading" que será junto com o segundo slide)
 
-
 ## Recomendações
 
 - Tenha atenção com a parte visual;
 - Organize suas tarefas criando issues;
 - Crie componentes para reaproveitar código.
-
