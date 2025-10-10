@@ -150,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 type Step = "email" | "character" | "loading" | "results";
 
@@ -180,8 +180,17 @@ const isEmailValid = computed(() => {
   return emailRegex.test(email.value);
 });
 
+onMounted(() => {
+  const storedEmail = localStorage.getItem("userEmail");
+  if (storedEmail) {
+    email.value = storedEmail;
+    step.value = "character";
+  }
+});
+
 const nextStep = () => {
   if (isEmailValid.value) {
+    localStorage.setItem("userEmail", email.value);
     step.value = "character";
   }
 };
@@ -246,10 +255,7 @@ const searchCharacter = async () => {
 };
 
 const resetApp = () => {
-  step.value = "email";
-  email.value = "";
-  emailState.value = "enabled";
-  emailError.value = "";
+  step.value = "character";
   characterName.value = "";
   characterState.value = "enabled";
   characterError.value = "";
