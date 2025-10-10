@@ -1,7 +1,7 @@
 <template>
   <img
     v-if="step === 'email'"
-    src="/public/img/LogoStarWars.png"
+    src="/img/LogoStarWars.png"
     alt="Star Wars Logo"
     class="w-full max-w-s mx-auto mb-10 transition-opacity duration-500"
   />
@@ -84,7 +84,7 @@
                 :available="true"
               />
             </div>
-            <StarWarsTag v-else label="N/A" :available="false" />
+            <StarWarsTag velse label="N/A" :available="false" />
           </div>
 
           <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
@@ -120,7 +120,7 @@
           </div>
 
           <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
-            <p class="text-text-onBackground text-xl">Especíe:</p>
+            <p class="text-text-onBackground text-xl">Espécie:</p>
             <div
               v-if="characterData.species.length"
               class="flex flex-wrap gap-2"
@@ -144,13 +144,15 @@
           </div>
         </div>
       </div>
-      <StarWarsButton @click="resetApp"> Pesquisar Novamente </StarWarsButton>
+      <StarWarsButton @click="resetForNewSearch">
+        Pesquisar Novamente
+      </StarWarsButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 
 type Step = "email" | "character" | "loading" | "results";
 
@@ -177,21 +179,30 @@ const showLoadingIcon = ref(false);
 
 const isEmailValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email.value);
-});
-
-onMounted(() => {
-  const storedEmail = localStorage.getItem("userEmail");
-  if (storedEmail) {
-    email.value = storedEmail;
-    step.value = "character";
-  }
+  return emailRegex.test(email.value) && email.value.length >= 3;
 });
 
 const nextStep = () => {
   if (isEmailValid.value) {
+    emailError.value = "";
     localStorage.setItem("userEmail", email.value);
-    step.value = "character";
+
+    // SOMENTE depois de clicar em "Próximo"verificamos o localStorage
+    const storedCharacterData = localStorage.getItem(
+      `characterData_${email.value}`
+    );
+
+    if (storedCharacterData) {
+      // Se encontrar dados para este e-mail, carrega e vai para os resultados.
+      characterData.value = JSON.parse(storedCharacterData);
+      step.value = "results";
+    } else {
+      // Se não encontrar, é o primeiro acesso, então vai para a busca.
+      step.value = "character";
+    }
+  } else {
+    emailState.value = "error";
+    emailError.value = "O e-mail deve ter no mínimo 3 caracteres e conter '@'.";
   }
 };
 
@@ -206,7 +217,7 @@ const searchCharacter = async () => {
   }, 500);
 
   try {
-    // Coletar todos os dados!
+    //API!
     const response = await fetch(
       `https://swapi.dev/api/people/?search=${encodeURIComponent(
         characterName.value
@@ -218,6 +229,7 @@ const searchCharacter = async () => {
       const character = data.results[0];
 
       const fetchName = async (url: string) => {
+        if (!url) return "N/A";
         const res = await fetch(url);
         const data = await res.json();
         return data.title || data.name;
@@ -229,7 +241,7 @@ const searchCharacter = async () => {
           Promise.all(character.starships.map(fetchName)),
           Promise.all(character.vehicles.map(fetchName)),
           Promise.all(character.species.map(fetchName)),
-          character.homeworld ? fetchName(character.homeworld) : "",
+          fetchName(character.homeworld),
         ]);
 
       characterData.value = {
@@ -241,6 +253,10 @@ const searchCharacter = async () => {
         homeworld,
       };
 
+      localStorage.setItem(
+        `characterData_${email.value}`,
+        JSON.stringify(characterData.value)
+      );
       step.value = "results";
     } else {
       characterState.value = "error";
@@ -254,12 +270,10 @@ const searchCharacter = async () => {
   }
 };
 
-const resetApp = () => {
+const resetForNewSearch = () => {
   step.value = "character";
   characterName.value = "";
   characterState.value = "enabled";
   characterError.value = "";
-  characterData.value = null;
-  showLoadingIcon.value = false;
 };
 </script>
