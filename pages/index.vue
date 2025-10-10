@@ -23,6 +23,7 @@
           :error="emailError"
           @focus="emailState = 'focused'"
           @blur="emailState = email ? 'success' : 'enabled'"
+          @keyup.enter="nextStep"
         />
       </div>
       <StarWarsButton :disabled="!isEmailValid" @click="nextStep"
@@ -42,6 +43,7 @@
           :error="characterError"
           @focus="characterState = 'focused'"
           @blur="characterState = characterName ? 'success' : 'enabled'"
+          @keyup.enter="searchCharacter"
         />
       </div>
       <StarWarsButton
@@ -84,7 +86,7 @@
                 :available="true"
               />
             </div>
-            <StarWarsTag velse label="N/A" :available="false" />
+            <StarWarsTag v-else label="N/A" :available="false" />
           </div>
 
           <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
@@ -187,7 +189,7 @@ const nextStep = () => {
     emailError.value = "";
     localStorage.setItem("userEmail", email.value);
 
-    // SOMENTE depois de clicar em "Próximo"verificamos o localStorage
+    // SOMENTE depois de clicar em "Próximo", verificamos o localStorage
     const storedCharacterData = localStorage.getItem(
       `characterData_${email.value}`
     );
@@ -217,7 +219,6 @@ const searchCharacter = async () => {
   }, 500);
 
   try {
-    //API!
     const response = await fetch(
       `https://swapi.dev/api/people/?search=${encodeURIComponent(
         characterName.value
