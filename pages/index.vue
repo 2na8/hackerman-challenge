@@ -189,17 +189,17 @@ const nextStep = () => {
     emailError.value = "";
     localStorage.setItem("userEmail", email.value);
 
-    // SOMENTE depois de clicar em "Próximo", verificamos o localStorage
+    // após clicar em "próximo", verificar localStorage
     const storedCharacterData = localStorage.getItem(
       `characterData_${email.value}`
     );
 
     if (storedCharacterData) {
-      // Se encontrar dados para este e-mail, carrega e vai para os resultados.
+      // se encontrar dados para este e-mail, carrega e vai para os resultados
       characterData.value = JSON.parse(storedCharacterData);
       step.value = "results";
     } else {
-      // Se não encontrar, é o primeiro acesso, então vai para a busca.
+      // se não encontrar, então vai para a busca.
       step.value = "character";
     }
   } else {
