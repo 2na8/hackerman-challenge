@@ -56,13 +56,13 @@
 
     <div
       v-else-if="step === 'loading'"
-      class="flex flex-col items-center gap-6 py-4"
+      class="flex flex-col items-center items-center gap-6 py-4"
     >
       <img
         v-if="showLoadingIcon"
         src="/img/IconeStormTrooper.png"
         alt="Ícone de loading"
-        class="w-12 h-12 animate-pulse"
+        class="w-12 h-12 animate-spin"
       />
       <p class="text-text-onBackground text-2xl font-semibold">Carregando...</p>
     </div>
