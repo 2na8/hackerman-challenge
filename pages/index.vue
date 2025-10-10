@@ -22,19 +22,18 @@
           :state="emailState"
           :error="emailError"
           @focus="emailState = 'focused'"
-          @blur="validateEmail"
-          @input="validateEmail"
+          @blur="emailState = email ? 'success' : 'enabled'"
         />
       </div>
-      <StarWarsButton :disabled="!isEmailValid" @click="nextStep">
-        Próximo
+      <StarWarsButton :disabled="!isEmailValid" @click="nextStep"
+        >Próximo
       </StarWarsButton>
     </div>
 
-    <div v-else-if="step === 'search'" class="flex flex-col gap-8">
+    <div v-else-if="step === 'character'" class="flex flex-col gap-8">
       <div class="flex flex-col gap-6">
-        <p class="text-text-onBackground text-xl text-left">
-          Digite o nome de um personagem de Star Wars para buscar:
+        <p class="text-text-onBackground text-xl">
+          Agora, digite seu personagem favorito de Star Wars
         </p>
         <StarWarsInput
           v-model="characterName"
@@ -42,22 +41,23 @@
           :state="characterState"
           :error="characterError"
           @focus="characterState = 'focused'"
-          @blur="characterState = 'enabled'"
+          @blur="characterState = characterName ? 'success' : 'enabled'"
         />
       </div>
       <StarWarsButton
         :disabled="!characterName.trim()"
         @click="searchCharacter"
       >
-        Pesquisar
+        Próximo
       </StarWarsButton>
     </div>
 
     <div
       v-else-if="step === 'loading'"
-      class="flex flex-col items-center justify-center gap-6 py-4 flex-grow"
+      class="flex flex-col items-center gap-6 py-4"
     >
       <img
+        v-if="showLoadingIcon"
         src="/img/IconeStormTrooper.png"
         alt="Ícone de loading"
         class="w-12 h-12 animate-pulse"
@@ -67,22 +67,78 @@
 
     <div
       v-else-if="step === 'results' && characterData"
-      class="flex flex-col gap-8 text-left"
+      class="flex flex-col gap-8"
     >
       <div class="flex flex-col gap-6">
         <h2 class="text-text-onBackground font-bold text-3xl leading-normal">
           Informações sobre<br />{{ characterData.name }}:
         </h2>
         <div class="flex flex-col gap-2">
-          <div class="flex flex-col gap-2 py-2">
+          <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
             <p class="text-text-onBackground text-xl">Filmes:</p>
             <div v-if="characterData.films.length" class="flex flex-wrap gap-2">
               <StarWarsTag
                 v-for="(film, i) in characterData.films"
-                :key="`film-${i}`"
+                :key="i"
                 :label="film"
                 :available="true"
               />
+            </div>
+            <StarWarsTag v-else label="N/A" :available="false" />
+          </div>
+
+          <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
+            <p class="text-text-onBackground text-xl">Naves:</p>
+            <div
+              v-if="characterData.starships.length"
+              class="flex flex-wrap gap-2"
+            >
+              <StarWarsTag
+                v-for="(ship, index) in characterData.starships"
+                :key="index"
+                :label="ship"
+                :available="true"
+              />
+            </div>
+            <StarWarsTag v-else label="N/A" :available="false" />
+          </div>
+
+          <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
+            <p class="text-text-onBackground text-xl">Veículos:</p>
+            <div
+              v-if="characterData.vehicles.length"
+              class="flex flex-wrap gap-2"
+            >
+              <StarWarsTag
+                v-for="(vehicle, index) in characterData.vehicles"
+                :key="index"
+                :label="vehicle"
+                :available="true"
+              />
+            </div>
+            <StarWarsTag v-else label="N/A" :available="false" />
+          </div>
+
+          <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
+            <p class="text-text-onBackground text-xl">Especíe:</p>
+            <div
+              v-if="characterData.species.length"
+              class="flex flex-wrap gap-2"
+            >
+              <StarWarsTag
+                v-for="(species, index) in characterData.species"
+                :key="index"
+                :label="species"
+                :available="true"
+              />
+            </div>
+            <StarWarsTag v-else label="N/A" :available="false" />
+          </div>
+
+          <div class="flex flex-col gap-2 py-2 rounded-lg shadow-tag">
+            <p class="text-text-onBackground text-xl">Planeta:</p>
+            <div v-if="characterData.homeworld" class="flex flex-wrap gap-2">
+              <StarWarsTag :label="characterData.homeworld" :available="true" />
             </div>
             <StarWarsTag v-else label="N/A" :available="false" />
           </div>
@@ -96,103 +152,108 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 
-// Variável para controlar qual etapa mostrar
-const step = ref<"email" | "search" | "loading" | "results">("email");
+type Step = "email" | "character" | "loading" | "results";
 
-// --- Lógica do E-mail ---
-const email = ref("");
-const emailState = ref<"enabled" | "focused" | "success" | "error">("enabled");
-const emailError = ref("");
-
-const isEmailValid = computed(() => {
-  if (!email.value) return false;
-  const emailRegex = /^[^\s@]{3,}@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email.value);
-});
-
-const validateEmail = () => {
-  if (!email.value) {
-    emailState.value = "enabled";
-    emailError.value = "";
-    return;
-  }
-  if (isEmailValid.value) {
-    emailState.value = "success";
-    emailError.value = "";
-  } else {
-    emailState.value = "error";
-    emailError.value = "E-mail inválido. Mínimo 3 caracteres antes do @.";
-  }
-};
-
-const nextStep = () => {
-  validateEmail();
-  if (isEmailValid.value) {
-    step.value = "search";
-  }
-};
-
-// --- Lógica da Busca ---
 interface CharacterData {
   name: string;
   films: string[];
+  starships: string[];
+  vehicles: string[];
+  species: string[];
+  homeworld: string;
 }
+
+const step = ref<Step>("email");
+const email = ref("");
+const emailState = ref<"enabled" | "focused" | "success" | "error">("enabled");
+const emailError = ref("");
 const characterName = ref("");
 const characterState = ref<"enabled" | "focused" | "success" | "error">(
   "enabled"
 );
 const characterError = ref("");
 const characterData = ref<CharacterData | null>(null);
+const showLoadingIcon = ref(false);
+
+const isEmailValid = computed(() => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email.value);
+});
+
+const nextStep = () => {
+  if (isEmailValid.value) {
+    step.value = "character";
+  }
+};
 
 const searchCharacter = async () => {
   if (!characterName.value.trim()) return;
 
-  step.value = "loading"; // Mostra o loading
-  characterError.value = "";
-  characterState.value = "enabled";
+  step.value = "loading";
+  showLoadingIcon.value = false;
+
+  setTimeout(() => {
+    showLoadingIcon.value = true;
+  }, 500);
 
   try {
-    // API!!
-    const { data, error } = await useFetch(
+    // Coletar todos os dados!
+    const response = await fetch(
       `https://swapi.dev/api/people/?search=${encodeURIComponent(
         characterName.value
       )}`
     );
+    const data = await response.json();
 
-    if (error.value || !data.value || data.value?.results?.length === 0) {
-      throw new Error("Character not found");
+    if (data.results && data.results.length > 0) {
+      const character = data.results[0];
+
+      const fetchName = async (url: string) => {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.title || data.name;
+      };
+
+      const [films, starships, vehicles, species, homeworld] =
+        await Promise.all([
+          Promise.all(character.films.map(fetchName)),
+          Promise.all(character.starships.map(fetchName)),
+          Promise.all(character.vehicles.map(fetchName)),
+          Promise.all(character.species.map(fetchName)),
+          character.homeworld ? fetchName(character.homeworld) : "",
+        ]);
+
+      characterData.value = {
+        name: character.name,
+        films,
+        starships,
+        vehicles,
+        species,
+        homeworld,
+      };
+
+      step.value = "results";
+    } else {
+      characterState.value = "error";
+      characterError.value = "Personagem inválido";
+      step.value = "character";
     }
-
-    const character = data.value.results[0];
-    const fetchFilmTitles = async (urls: string[]) => {
-      const filmPromises = urls.map((url) =>
-        useFetch(url).then((res) => res.data.value.title)
-      );
-      return await Promise.all(filmPromises);
-    };
-
-    const films = await fetchFilmTitles(character.films);
-
-    characterData.value = {
-      name: character.name,
-      films,
-    };
-
-    step.value = "results";
-  } catch (err) {
+  } catch (error) {
     characterState.value = "error";
-    characterError.value = "Personagem não encontrado.";
-    step.value = "search"; // volta para a busca
+    characterError.value = "Erro ao buscar personagem";
+    step.value = "character";
   }
 };
 
-// --- lógica para resetar ---
 const resetApp = () => {
+  step.value = "email";
   email.value = "";
   emailState.value = "enabled";
   emailError.value = "";
   characterName.value = "";
+  characterState.value = "enabled";
+  characterError.value = "";
   characterData.value = null;
-  step.value = "email";
+  showLoadingIcon.value = false;
 };
 </script>
